@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+find . -maxdepth 2 -type d -name ".gg" | while read -r line; do
+    (
+        # Remove the ".gg" from the end of the path.
+        dirToSync="${line: : -3}"
+        # Remove the "./" at the beginning of the path.
+        dirToSync="${dirToSync:2}"
+        # Remove trailing "/" so it looks nicer in the output.
+        dirToSyncClean="${dirToSync: : -1}"
+
+        echo "Processing folder: '$dirToSyncClean'"
+
+        cd "$dirToSync" || exit
+
+        gg sync | while read -r line; do 
+            echo "[$dirToSyncClean] $line"
+        done
+    )
+done
+

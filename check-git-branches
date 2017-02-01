@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+quiet=$1
+
+if [ "$#" -gt 1 ]; then
+    echo "Invalid number of arguments."
+fi
+
+if [[ "$1" != "-q" ]] && [[ "$1" != "" ]]; then
+    echo "Option not recognized. Ignoring..."
+fi
+
+find . -maxdepth 5 -type d -name ".git" | while read -r line; do
+    (
+        # Remove the "/.git" from the end of the path.
+        gitRepo="${line: : -4}"
+        # Remove the "./" at the beginning of the path.
+        gitRepo="${gitRepo:2}"
+        # Remove trailing "/" so it looks nicer in the output.
+        gitRepoClean="${gitRepo: : -1}"
+
+        cd "$gitRepo" || exit
+
+        branch=$(git rev-parse --abbrev-ref HEAD)
+
+        if [[ $quiet != "-q" ]]; then
+            echo "'$gitRepoClean' on branch '$branch'"
+        fi
+
+        if [[ $branch != "master" ]]; then
+            echo "-----'$gitRepoClean' ON BRANCH '$branch' INSTEAD OF MASTER-----"
+        fi
+
+    )
+done
+
