@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Immediately stop on any command that fails
+set -e
+
 quiet=$1
 
 if [ "$#" -gt 1 ]; then

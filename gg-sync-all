@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Immediately stop on any command that fails
+set -e
+
 find . -maxdepth 2 -type d -name ".gg" | while read -r line; do
     (
         # Remove the ".gg" from the end of the path.
