@@ -29,10 +29,12 @@ updateSnaps() {
     snap refresh
 }
 
-
-checkForSudo
-updateAndUpgradeApt
-updateFlatpak
-updateNpmGlobal
-updateSnaps
+if checkForSudo; then
+    updateAndUpgradeApt
+    updateFlatpak
+    updateNpmGlobal
+    updateSnaps
+else
+    echo "Please run me as root!"
+fi
 
