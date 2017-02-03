@@ -35,6 +35,8 @@ if checkForSudo; then
     updateNpmGlobal
     updateSnaps
 else
-    echo "Please run me as root!"
+    #echo "Please run me as root!"
+    # Just run the current command with sudo.
+    sudo "$0" "$@"
 fi
 
