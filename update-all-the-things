@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Import stuffs.
+. ./check-for-sudo
+. ./check-for-command-existance
+
+# Run update and upgrade.
+updateAndUpgradeApt() {
+    checkForCommandExistence "apt"
+    apt update
+    apt upgrade
+}
+
+# Runs flatpak update.
+updateFlatpak() {
+    checkForCommandExistence "flatpak"
+    flatpak update
+}
+
+# Runs npm-check on global.
+updateNpmGlobal() {
+    checkForCommandExistence "npm-check"
+    npm-check -gu
+}
+
+# Attempts to refresh all snaps.
+updateSnaps() {
+    checkForCommandExistence "snap"
+    snap refresh
+}
+
+
+checkForSudo
+updateAndUpgradeApt
+updateFlatpak
+updateNpmGlobal
+updateSnaps
+

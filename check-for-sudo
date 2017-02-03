@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Checks to see if we're running as sudo.
+checkForSudo() {
+    if [ "$(id -u)" != "0" ]; then
+        echo "Please run me as root."
+        exit 1
+    fi
+}
+

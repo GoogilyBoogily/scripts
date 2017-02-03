@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Checks to see if the passed in command exists.
+checkForCommandExistence() {
+    # Check if there's more than one argument
+    #   if there is, exit.
+    if [ "$#" -gt 1 ]; then
+        echo "Invalid number of arguments."
+        exit 1
+    fi
+
+    commandToCheck="$1"
+    command -v "$commandToCheck" >/dev/null 2>&1 || { echo >&2 "I require $commandToCheck but it's not available. Aborting..."; exit 1; }
+}
+
