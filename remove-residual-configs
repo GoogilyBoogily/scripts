@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+dpkg -l | grep '^rc' | awk '{print $2}' | xargs sudo apt-get purge -y
+
