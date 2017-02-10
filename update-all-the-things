@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# One liner for getting the location of where this script is.
+workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Import stuffs.
-. ./check-for-sudo
-. ./check-for-command-existance
+. "$workingDir/check-for-sudo"
+. "$workingDir/check-for-command-existance"
 
 # Run update and upgrade.
 updateAndUpgradeApt() {
