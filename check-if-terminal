@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Checks if we're currently running in a terminal (as opposed to a graphical interface).
 # Returns 0 if we're in a terminal, and 1 if we're not.

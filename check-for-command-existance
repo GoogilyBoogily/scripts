@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Checks to see if the passed in command exists.
 checkForCommandExistence() {

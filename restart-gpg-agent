@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+gpgconf --kill gpg-agent
+gpg-connect-agent /bye
+gpg-agent
+
