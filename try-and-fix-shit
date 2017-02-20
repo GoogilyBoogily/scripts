@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo "Running some shit to try and fix broken shit."
+sudo apt-get clean
+sudo apt update
+sudo apt-get update --fix-missing
+sudo dpkg --configure -a
+sudo apt-get install -f
+
