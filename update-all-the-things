@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# This flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
+set -e
+# This flag makes the interpreter print each command right before it is executed.
+set -x
+
 # One liner for getting the location of where this script is.
 workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
