@@ -2,8 +2,23 @@
 
 # This flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
 set -e
-# This flag makes the interpreter print each command right before it is executed.
-set -x
+
+verbose=$1
+
+if [ "$#" -gt 1 ]; then
+    echo "Invalid number of arguments."
+fi
+
+if [[ "$1" != "-v" ]] && [[ "$1" != "" ]]; then
+    echo "Option not recognized. Ignoring..."
+fi
+
+# Check if we've enabled verbose logging.
+if [[ $verbose == "-v" ]]; then
+    # This flag makes the interpreter print each command right before it is executed.
+    set -x
+fi
+
 
 # One liner for getting the location of where this script is.
 workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -16,21 +31,24 @@ source "$workingDir/check-for-command-existance"
 # Run update and upgrade.
 updateAndUpgradeApt() {
     checkForCommandExistence "apt"
-    apt update
-    apt upgrade
+    echo "Running 'sudo apt update' and 'sudo apt upgrade'"
+    sudo apt update
+    sudo apt upgrade
 }
 
 
 # Runs flatpak update.
 updateFlatpak() {
     checkForCommandExistence "flatpak"
-    flatpak update
+    echo "Running 'sudo flatpak update'"
+    sudo flatpak update
 }
 
 
 # Runs npm-check on global.
 updateNpmGlobal() {
     checkForCommandExistence "npm-check"
+    echo "Running 'npm-check -gu'"
     npm-check -gu
 }
 
@@ -38,18 +56,27 @@ updateNpmGlobal() {
 # Attempts to refresh all snaps.
 updateSnaps() {
     checkForCommandExistence "snap"
-    snap refresh
+    scho "Running 'sudo snap refresh'"
+    sudo snap refresh
 }
 
 
-if checkForSudo; then
+runUpdates() {
     updateAndUpgradeApt
     updateFlatpak
-    updateNpmGlobal
     updateSnaps
+    updateNpmGlobal
+}
+
+
+# Check if this script was ran as sudo...
+# Fail if we were (we got stuff we don't want to run as sudo.
+# And run some things as sudo, and others as user.
+if checkForSudo; then 
+    echo "Don't run this as sudo..."
+    exit 1
 else
-    #echo "Please run me as root!"
-    # Just run the current command with sudo.
-    sudo "$0" "$@"
+    # Run update commands.
+    runUpdates
 fi
 
