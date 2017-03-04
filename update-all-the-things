@@ -56,7 +56,7 @@ updateNpmGlobal() {
 # Attempts to refresh all snaps.
 updateSnaps() {
     checkForCommandExistence "snap"
-    scho "Running 'sudo snap refresh'"
+    echo "Running 'sudo snap refresh'"
     sudo snap refresh
 }
 

@@ -12,7 +12,7 @@ find . -maxdepth 2 -type d -name ".gg" | while read -r line; do
         # Remove trailing "/" so it looks nicer in the output.
         dirToSyncClean="${dirToSync: : -1}"
 
-        echo "Processing folder: '$dirToSyncClean'"
+        echo "===== Processing folder: '$dirToSyncClean' ====="
 
         cd "$dirToSync" || exit
 
