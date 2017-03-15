@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+#set -x
 
-for package in $(npm -g outdated --parseable --depth=0 | cut -d: -f3)
+packages=""
+
+for package in $(npm outdated -g --parseable --depth=0 | cut -d: -f4)
 do
-    npm -g install "$package"
+    packages+="$package "
 done
+
+if [[ -z "$packages" ]] then;
+    echo "All NPM pacakges are up to date!"
+else
+    pacakges="${packages: : -1}"
+    echo "Upgrading pacakges: $packages"
+    npm install -g "$packages"
+fi
 

@@ -47,9 +47,11 @@ updateFlatpak() {
 
 # Runs npm-check on global.
 updateNpmGlobal() {
-    checkForCommandExistence "npm-check"
-    echo "Running 'npm-check -gu'"
-    npm-check -gu
+    #checkForCommandExistence "npm-check"
+    #echo "Running 'npm-check -gu'"
+    #npm-check -gu
+    echo "Running '$workingDir/npm-upgrade-bleeding'"
+    $workingDir/npm-upgrade-bleeding
 }
 
 
