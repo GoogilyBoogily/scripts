@@ -10,7 +10,7 @@ do
     packages+="$package "
 done
 
-if [[ -z "$packages" ]] then;
+if [[ -z "$packages" ]]; then
     echo "All NPM pacakges are up to date!"
 else
     pacakges="${packages: : -1}"
