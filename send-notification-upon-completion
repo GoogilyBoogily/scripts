@@ -1,0 +1,7 @@
+#!/usr/env/bin bash
+
+startTime=$(date +%s)
+"$@"
+endTime=$(data +%s)
+notify-send "$@" "Long running command \"$(echo $@)\" took $((endTime - startTime)) seconds to finish."
+
