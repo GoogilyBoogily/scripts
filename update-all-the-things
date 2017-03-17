@@ -51,7 +51,7 @@ updateNpmGlobal() {
     #echo "Running 'npm-check -gu'"
     #npm-check -gu
     echo "Running '$workingDir/npm-upgrade-bleeding'"
-    $workingDir/npm-upgrade-bleeding
+    "$workingDir/npm-upgrade-bleeding"
 }
 
 
