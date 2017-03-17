@@ -2,6 +2,7 @@
 
 startTime=$(date +%s)
 "$@"
-endTime=$(data +%s)
-notify-send "$@" "Long running command \"$(echo $@)\" took $((endTime - startTime)) seconds to finish."
+endTime=$(date +%s)
+timeDiff=$((endTime - startTime))
+notify-send "Command \"$*\" finished in $timeDiff seconds."
 
