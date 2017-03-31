@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Bash strict mode.
+set -eEo pipefail
+
+# One liner for getting the location of where this script is.
+workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Import stuffs.
+source "$workingDir/version-compare"
+
+# If NVM exists, source it.
+# Else exit.
+# True if the file exists and has a size greater than zero.
+if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+    . "$HOME/.nvm/nvm.sh"
+else
+    echo "NVM doesn't exist on your system."
+    exit 1
+fi
+
+latestVersionRemote=$(nvm_ls_remote | tail -1 | cut -c2-)
+echo "The latest remote Node version is: '$latestVersionRemote'"
+latestVersionLocal=$(nvm_ls | tail -2 | head -1 | cut -c2-)
+echo "The latest local Node version is: '$latestVersionLocal'"
+
+versionCompare $latestVersionRemote $latestVersionLocal
+comparison=$?
+
+if [[ "$comparison" == 0 ]]; then
+    echo "You have the latest version of Node! :D"
+elif [[ "$comparison" == 1 ]]; then
+    echo "You don't have the lastest version of Node! :("
+else
+    echo "You somehow have a later version of Node than the latest release..."
+fi
+
