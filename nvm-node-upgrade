@@ -16,6 +16,11 @@ nvmNodeUpdateCheck
 updateCheck=$?
 
 if [[ $updateCheck == 0 ]]; then
+    # There is no update available.
+    echo "You have the latest version of Node installed."
+
+    exit 0
+elif [[ $updateCheck == 1 ]]; then
     # There is an update available!
 
     # If NVM exists, source it.
@@ -32,11 +37,6 @@ if [[ $updateCheck == 0 ]]; then
 
     echo "Installing latest version of Node and reinstalling global NPM modules on it."
     nvm install node --reinstall-packages-from=node
-
-    exit 0
-elif [[ $updateCheck == 1 ]]; then
-    # There is no update available.
-    echo "You have the latest version of Node installed."
 
     exit 0
 fi

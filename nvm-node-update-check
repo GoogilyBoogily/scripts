@@ -11,12 +11,14 @@ nvmNodeUpdateCheck() {
     workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     # Import stuffs.
+    # shellcheck disable=SC1090
     source "$workingDir/version-compare"
 
     # If NVM exists, source it.
     # Else exit.
     # True if the file exists and has a size greater than zero.
     if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        # shellcheck disable=SC1090
         . "$HOME/.nvm/nvm.sh"
     else
         echo "NVM doesn't exist on your system."
