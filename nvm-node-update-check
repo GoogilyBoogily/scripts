@@ -3,35 +3,46 @@
 # Bash strict mode.
 set -eEo pipefail
 
-# One liner for getting the location of where this script is.
-workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Import stuffs.
-source "$workingDir/version-compare"
+# Returns 0 if you have the latest version of node, 1 if you don't,
+# and 2 if you somehow have a later version of node than the latest.
+nvmNodeUpdateCheck() {
+    # One liner for getting the location of where this script is.
+    workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# If NVM exists, source it.
-# Else exit.
-# True if the file exists and has a size greater than zero.
-if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
-    . "$HOME/.nvm/nvm.sh"
-else
-    echo "NVM doesn't exist on your system."
-    exit 1
-fi
+    # Import stuffs.
+    source "$workingDir/version-compare"
 
-latestVersionRemote=$(nvm_ls_remote | tail -1 | cut -c2-)
-echo "The latest remote Node version is: '$latestVersionRemote'"
-latestVersionLocal=$(nvm_ls | tail -2 | head -1 | cut -c2-)
-echo "The latest local Node version is: '$latestVersionLocal'"
+    # If NVM exists, source it.
+    # Else exit.
+    # True if the file exists and has a size greater than zero.
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        . "$HOME/.nvm/nvm.sh"
+    else
+        echo "NVM doesn't exist on your system."
+        exit 1
+    fi
 
-versionCompare $latestVersionRemote $latestVersionLocal
-comparison=$?
+    latestVersionRemote=$(nvm_ls_remote | tail -1 | cut -c2-)
+    echo "The latest remote Node version is: '$latestVersionRemote'"
+    latestVersionLocal=$(nvm_ls | tail -2 | head -1 | cut -c2-)
+    echo "The latest local Node version is: '$latestVersionLocal'"
 
-if [[ "$comparison" == 0 ]]; then
-    echo "You have the latest version of Node! :D"
-elif [[ "$comparison" == 1 ]]; then
-    echo "You don't have the lastest version of Node! :("
-else
-    echo "You somehow have a later version of Node than the latest release..."
-fi
+    versionCompare "$latestVersionRemote" "$latestVersionLocal"
+    comparison=$?
+
+    if [[ "$comparison" == 0 ]]; then
+        echo "You have the latest version of Node! :D"
+
+        return "$comparison"
+    elif [[ "$comparison" == 1 ]]; then
+        echo "You don't have the lastest version of Node! :("
+
+        return "$comparison"
+    else
+        echo "You somehow have a later version of Node than the latest release..."
+
+        return "$comparison"
+    fi
+}
 

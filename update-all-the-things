@@ -25,7 +25,9 @@ fi
 workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Import stuffs.
+# shellcheck disable=SC1090
 source "$workingDir/check-for-sudo"
+# shellcheck disable=SC1090
 source "$workingDir/check-for-command-existance"
 
 

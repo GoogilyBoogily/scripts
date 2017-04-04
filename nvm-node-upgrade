@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Bash strict mode.
+set -eEo pipefail
+
+# One liner for getting the location of where this script is.
+workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Import stuffs.
+# shellcheck disable=SC1090
+source "$workingDir/nvm-node-update-check"
+
+# Go check for an update.
+nvmNodeUpdateCheck
+# Grab the return value.
+updateCheck=$?
+
+if [[ $updateCheck == 0 ]]; then
+    # There is an update available!
+
+    # If NVM exists, source it.
+    # Else exit.
+    # True if the file exists and has a size greater than zero.
+    if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+        # shellcheck disable=SC1090
+        . "$HOME/.nvm/nvm.sh"
+    else
+        echo "NVM doesn't exist on your system."
+
+        exit 1
+    fi
+
+    echo "Installing latest version of Node and reinstalling global NPM modules on it."
+    nvm install node --reinstall-packages-from=node
+
+    exit 0
+elif [[ $updateCheck == 1 ]]; then
+    # There is no update available.
+    echo "You have the latest version of Node installed."
+
+    exit 0
+fi
+
