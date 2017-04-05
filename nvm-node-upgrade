@@ -3,6 +3,10 @@
 # Bash strict mode.
 set -eEo pipefail
 
+if [ "$#" -gt 1 ]; then
+    echo "Invalid number of arguments."
+fi
+
 # One liner for getting the location of where this script is.
 workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -10,8 +14,17 @@ workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # shellcheck disable=SC1090
 source "$workingDir/nvm-node-update-check"
 
+option=""
+
+if [[ "$1" != "--lts" ]] && [[ "$1" != "" ]]; then
+    echo "Option not recognized. Ignoring..."
+    option=""
+else
+    option="$1"
+fi
+
 # Go check for an update.
-nvmNodeUpdateCheck
+nvmNodeUpdateCheck "$option"
 # Grab the return value.
 updateCheck=$?
 
@@ -36,7 +49,7 @@ elif [[ $updateCheck == 1 ]]; then
     fi
 
     echo "Installing latest version of Node and reinstalling global NPM modules on it."
-    nvm install node --reinstall-packages-from=node
+    nvm install node "$option" --reinstall-packages-from=node
 
     exit 0
 fi

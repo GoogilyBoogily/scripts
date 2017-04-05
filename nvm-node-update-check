@@ -3,10 +3,25 @@
 # Bash strict mode.
 set -eEo pipefail
 
-
 # Returns 0 if you have the latest version of node, 1 if you don't,
 # and 2 if you somehow have a later version of node than the latest.
+# The "--lts" option may be passed in to just check long term service versions.
 nvmNodeUpdateCheck() {
+    declare latestVersionRemote latestVersionLocal option
+
+    if [ "$#" -gt 1 ]; then
+        echo "Invalid number of arguments."
+    fi
+
+    option=""
+
+    if [[ "$1" != "--lts" ]] && [[ "$1" != "" ]]; then
+        echo "Option not recognized. Ignoring..."
+        option=""
+    else
+        option="$1"
+    fi
+
     # One liner for getting the location of where this script is.
     workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -25,9 +40,9 @@ nvmNodeUpdateCheck() {
         exit 1
     fi
 
-    latestVersionRemote=$(nvm_ls_remote | tail -1 | cut -c2-)
+    latestVersionRemote=$(nvm version-remote "$option")
     echo "The latest remote Node version is: '$latestVersionRemote'"
-    latestVersionLocal=$(nvm_ls | tail -2 | head -1 | cut -c2-)
+    latestVersionLocal=$(nvm version "$option")
     echo "The latest local Node version is: '$latestVersionLocal'"
 
     versionCompare "$latestVersionRemote" "$latestVersionLocal"
