@@ -17,7 +17,7 @@ updateCheck=$?
 
 if [[ $updateCheck == 0 ]]; then
     # There is no update available.
-    echo "You have the latest version of Node installed."
+    echo "You have the latest version of Node installed! :D"
 
     exit 0
 elif [[ $updateCheck == 1 ]]; then
@@ -30,7 +30,7 @@ elif [[ $updateCheck == 1 ]]; then
         # shellcheck disable=SC1090
         . "$HOME/.nvm/nvm.sh"
     else
-        echo "NVM doesn't exist on your system."
+        echo "NVM doesn't exist on your system... :/"
 
         exit 1
     fi

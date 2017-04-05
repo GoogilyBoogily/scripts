@@ -21,7 +21,7 @@ nvmNodeUpdateCheck() {
         # shellcheck disable=SC1090
         . "$HOME/.nvm/nvm.sh"
     else
-        echo "NVM doesn't exist on your system."
+        echo "NVM doesn't exist on your system... :/"
         exit 1
     fi
 
@@ -34,16 +34,13 @@ nvmNodeUpdateCheck() {
     comparison=$?
 
     if [[ "$comparison" == 0 ]]; then
-        echo "You have the latest version of Node! :D"
-
+        # The latest version of Node is installed.
         return "$comparison"
     elif [[ "$comparison" == 1 ]]; then
-        echo "You don't have the lastest version of Node! :("
-
+        # Don't have the latest version installed.
         return "$comparison"
     else
-        echo "You somehow have a later version of Node than the latest release..."
-
+        # Somehow a later version than the latest is installed...
         return "$comparison"
     fi
 }
