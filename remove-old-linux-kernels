@@ -1,6 +1,20 @@
 #/usr/bin/env bash
 
+# Option 1
 dpkg --list | grep 'linux-image' | awk '{ print $2 }' | sort -V | sed -n '/'"$(uname -r | sed "s/\([0-9.-]*\)-\([^0-9]\+\)/\1/")"'/q;p' | xargs sudo apt-get -y purge
-
 dpkg --list | grep 'linux-headers' | awk '{ print $2 }' | sort -V | sed -n '/'"$(uname -r | sed "s/\([0-9.-]*\)-\([^0-9]\+\)/\1/")"'/q;p' | xargs sudo apt-get -y purge
+
+
+# Option 2
+sudo apt-get purge $(for tag in "linux-image" "linux-headers"; do dpkg-query -W -f'${Package}\n' "$tag-[0-9]*.[0-9]*.[0-9]*" | sort -V | awk 'index($0,c){exit} //' c=$(uname -r | cut -d- -f1,2); done)
+
+
+# Option 3
+OLD=$(ls -tr /boot/vmlinuz-* | head -n -2 | cut -d- -f2- |
+    awk '{print "linux-image-" $0 " linux-headers-" $0}' )
+if [ -n "$OLD" ]; then
+    sudo apt -qy remove --purge $OLD
+fi
+
+sudo apt -qy autoremove --purge
 
