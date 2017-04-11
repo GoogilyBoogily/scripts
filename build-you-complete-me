@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+(
+    cd $HOME/.vim/bundle/YouCompleteMe/
+    python ./install.py --tern-completer
+)
+
