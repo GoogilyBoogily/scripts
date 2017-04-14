@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+orgOrUser="wavebox"
+repo=waveboxapp
+arch="x86_64"
+extension="deb"
+
+latestRelease=$(curl -s "https://api.github.com/repos/$orgOrUser/$repo/releases/latest")
+releaseNotes=$(echo "$latestRelease" | jq -r ".body")
+downloadUrl=$(echo "$latestRelease" | jq -r ".assets[] | .browser_download_url | select(endswith(\"$arch.$extension\"))")
+
+echo "$releaseNotes"
+echo "$downloadUrl"
+

@@ -6,6 +6,20 @@ versionCompare () {
         return 0
     fi
 
+    if [[ "$1" == "v"* ]]; then
+        ${1#?}
+    fi
+
+    if [[ "$2" == "v"* ]]; then
+        ${2#?}
+    fi
+
+
+    echo "$1"
+    echo "$2"
+
+
+
     local IFS=.
     local i ver1=($1) ver2=($2)
 

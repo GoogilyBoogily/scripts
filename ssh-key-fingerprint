@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+sshKey="$1"
+
+openssl rsa -in "$sshKey" -pubout -outform DER | openssl md5 -c
+
