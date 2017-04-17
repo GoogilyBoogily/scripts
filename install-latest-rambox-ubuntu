@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
 
-orgOrUser="wavebox"
-repo=waveboxapp
-arch="x86_64"
+# The -e flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
+# Bash strict mode.
+set -eEo pipefail
+
+declare orgOrUser repo arch extension
+
+# One liner for getting the location of where this script is.
+workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Import stuffs.
+# shellcheck disable=SC1090
+source "$workingDir/install-latest-release-from-github"
+
+orgOrUser="saenzramiro"
+repo="rambox"
+arch="x64"
 extension="deb"
 
-latestRelease=$(curl -s "https://api.github.com/repos/$orgOrUser/$repo/releases/latest")
-releaseNotes=$(echo "$latestRelease" | jq -r ".body")
-downloadUrl=$(echo "$latestRelease" | jq -r ".assets[] | .browser_download_url | select(endswith(\"$arch.$extension\"))")
-
-echo "$releaseNotes"
-echo "$downloadUrl"
+installLatestReleaseFromGitHub $orgOrUser $repo $arch $extension
 

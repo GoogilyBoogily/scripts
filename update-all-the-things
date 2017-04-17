@@ -20,7 +20,6 @@ if [[ $verbose == "-v" ]]; then
     set -x
 fi
 
-
 # One liner for getting the location of where this script is.
 workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 

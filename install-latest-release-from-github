@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# The -e flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
+# Bash strict mode.
+set -eEo pipefail
+
+# Takes the organization or user, the repo name, the architecture, and the filename extention, and downloads and installs the latest release from that GiHub repo.
+installLatestReleaseFromGitHub() {
+    orgOrUser="$1"
+    repo="$2"
+    arch="$3"
+    extension="$4"
+    filename=""
+
+    latestRelease=$(curl -s "https://api.github.com/repos/$orgOrUser/$repo/releases/latest")
+    releaseNotes=$(echo "$latestRelease" | jq -r ".body")
+    downloadUrl=$(echo "$latestRelease" | jq -r ".assets[] | .browser_download_url | select(endswith(\"$arch.$extension\"))")
+
+    echo "========== Release Notes =========="
+    echo "$releaseNotes"
+    echo "==================================="
+
+    filename="${downloadUrl##*/}"
+
+    echo "Downloading '$filename' from '$downloadUrl'"
+    wget -q "$downloadUrl"
+    echo "Successfully downloaded '$filename'."
+    echo "Now installing it."
+    sudo dpkg -i "$filename"
+    echo "Cleaning up..."
+    rm "$filename"
+}
+
