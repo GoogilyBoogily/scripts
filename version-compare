@@ -2,26 +2,23 @@
 
 # Returns 0 if versions are euqal, 1 if first version is greater than second, and 2 if second version is greater than first.
 versionCompare () {
-    if [[ "$1" == "$2" ]]; then
+    leftHandSide="$1"
+    rightHandSide="$2"
+
+    if [[ "$leftHandSide" == "$rightHandSide" ]]; then
         return 0
     fi
 
-    if [[ "$1" == "v"* ]]; then
-        ${1#?}
+    if [[ "$leftHandSide" == "v"* ]]; then
+        leftHandSide=${leftHandSide#"v"}
     fi
 
-    if [[ "$2" == "v"* ]]; then
-        ${2#?}
+    if [[ "$rightHandSide" == "v"* ]]; then
+        rightHandSide=${rightHandSide#"v"}
     fi
-
-
-    echo "$1"
-    echo "$2"
-
-
 
     local IFS=.
-    local i ver1=($1) ver2=($2)
+    local i ver1=($leftHandSide) ver2=($rightHandSide)
 
     # Fill empty fields in ver1 with zeros
     for ((i=${#ver1[@]}; i<${#ver2[@]}; i++)); do

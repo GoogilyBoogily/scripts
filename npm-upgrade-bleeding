@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
-#set -x
+# The -e flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
+# Bash strict mode.
+set -eEo pipefail
 
 packages=""
 
