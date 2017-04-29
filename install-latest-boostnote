@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# The -e flag makes it so if a command exits with an error and the caller does not check such error, the script aborts immediately.
+# Bash strict mode.
+set -eEo pipefail
+
+declare orgOrUser repo arch extension
+
+# One liner for getting the location of where this script is.
+workingDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Import stuffs.
+# shellcheck disable=SC1090
+source "$workingDir/install-latest-release-from-github"
+
+orgOrUser="BoostIO"
+repo="boost-releases"
+arch="amd64"
+extension="deb"
+
+installLatestReleaseFromGitHub $orgOrUser $repo $arch $extension
+
