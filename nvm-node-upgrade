@@ -28,6 +28,8 @@ nvmNodeUpdateCheck "$option"
 # Grab the return value.
 updateCheck=$?
 
+echo "$updateCheck"
+
 if [[ $updateCheck == 0 ]]; then
     # There is no update available.
     echo "You have the latest version of Node installed! :D"
