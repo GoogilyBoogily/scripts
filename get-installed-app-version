@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eEo pipefail
+
 # Attempts to get the version number for the passed in app name.
 # Returns 1 if the package isn't installed.
 # Outputs the version number if it is installed.
