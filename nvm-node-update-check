@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Bash strict mode.
-set -eEo pipefail
+#set -eEo pipefail
 
 # Returns 0 if you have the latest version of node, 1 if you don't,
 # and 2 if you somehow have a later version of node than the latest.

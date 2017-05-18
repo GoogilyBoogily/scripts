@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Bash strict mode.
-set -eEo pipefail
+#set -eEo pipefail
 
 if [ "$#" -gt 1 ]; then
     echo "Invalid number of arguments."
@@ -27,8 +27,6 @@ fi
 nvmNodeUpdateCheck "$option"
 # Grab the return value.
 updateCheck=$?
-
-echo "$updateCheck"
 
 if [[ $updateCheck == 0 ]]; then
     # There is no update available.
