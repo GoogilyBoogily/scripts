@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Attempts to get the version number for the passed in app name.
+# Returns 1 if the package isn't installed.
+# Outputs the version number if it is installed.
+getInstalledAppVersion() {
+    appName=$1
+
+    appVersionString=$(dpkg-query -W -f='${Version}' "$appName" 2>&1)
+
+    if [[ $appVersionString == "dpkg-query: no packages found matching"* ]]; then
+        # echo "The requested package isn't installed"
+        return 1
+    fi
+
+    appVersionString=${appVersionString#$prefixToRemove}
+
+    echo "$appVersionString"
+}
+
