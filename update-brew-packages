@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+#set -x
+
+packages=""
+
+echo "Updating Brew formulas repo."
+brewUpdateOutput=$(brew update)
+echo "brew update output: $brewUpdateOutput"
+
+for formula in $(brew outdated | cut -d: -f3)
+do
+    formulas+="$formula "
+done
+
+if [[ -z "$formulas" ]]; then
+    echo "All brew formulas are up to date!"
+else
+    #formulas="${formulas: : -1}"
+    formulas="$(echo $formulas | sed 's/ *$//')"
+    echo "Upgrading formulas: $formulas"
+    brew upgrade $packages
+fi
+
