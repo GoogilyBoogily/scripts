@@ -14,7 +14,8 @@ done
 if [[ -z "$packages" ]]; then
     echo "All NPM pacakges are up to date!"
 else
-    packages="${packages: : -1}"
+    #packages="${packages: : -1}"
+    packages="$(echo $packages | sed 's/ *$//')"
     echo "Upgrading pacakges: $packages"
     npm install -g $packages
 fi

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Immediately stop on any command that fails
+set -e
+
+find . -maxdepth 3 -name "package.json" | grep -v "node_modules" | while read -r line; do
+    (
+        dirToUpdate=$line
+        # Remove the "package.json" from the end of the path.
+        #dirToSync="${line: : -12}"
+        dirToUpdate="${dirToUpdate::${#dirToUpdate}-12}"
+        # Remove the "./" at the beginning of the path.
+        #dirToSync="${dirToSync:2}"
+        dirToUpdate="${dirToUpdate:2}"
+        # Remove trailing "/" so it looks nicer in the output.
+        #dirToSyncClean="${dirToSync: : -1}"
+        dirToUpdateClean="${dirToUpdate::${#dirToUpdate}-1}"
+
+        echo "===== Processing folder: '$dirToUpdateClean' ====="
+
+        cd "$dirToUpdate" || exit
+        npm update | while read -r line; do 
+            echo "[$dirToSyncClean] $line"
+        done
+    )
+done
+
